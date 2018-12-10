@@ -1,42 +1,40 @@
-package com.nami.dfs;
+package com.nami.dfs.Service;
 
 import ch.ethz.ssh2.Connection;
 import ch.ethz.ssh2.SCPClient;
 
 import java.io.IOException;
 
-public class ScpFile {
-    private static String IP;
+public class FileChannelService {
+    private String IP;
     private static int PORT = 22;
-    private static String USER = "user";//登录用户名
-    private static String PASSWORD = "123456";//生成私钥的密码和登录密码，这两个共用这个密码
+    private static String USERNAME = "user";
+    private static String PASSWORD = "123456";
     private static Connection connection;
-    private static int BLOCKSIZE = 1024 * 1024 * 64; //64Mb
-    //private static String systemLog = FileUtil.currentWorkDir+"systemLog.txt";
+    private static int BLOCKSIZE = 1024 * 1024 * 64;
 
-    public ScpFile(String ip) {
+    public FileChannelService(String ip) {
         IP = ip;
         connection = new Connection(ip, PORT);
     }
 
-
-    public static boolean isAuthedWithPassword(String user, String password) {
+    public boolean isAuthencatedWithPassword(String username, String password) {
         try {
-            return connection.authenticateWithPassword(user, password);
+            return connection.authenticateWithPassword(username, password);
         } catch (IOException e) {
             e.printStackTrace();
         }
         return false;
     }
 
-    public static void getFile(String remoteFilePath, String downloadFilePath) {
+    public void getFile(String remoteFilePath, String localFilePath) {
         try {
             connection.connect();
-            boolean isAuthed = isAuthedWithPassword(USER, PASSWORD);
+            boolean isAuthed = isAuthencatedWithPassword(USERNAME, PASSWORD);
             if (isAuthed) {
                 System.out.println("认证成功!");
                 SCPClient scpClient = connection.createSCPClient();
-                scpClient.get(remoteFilePath, downloadFilePath);
+                scpClient.get(remoteFilePath, localFilePath);
             } else {
                 System.out.println("认证失败!");
             }
@@ -47,13 +45,13 @@ public class ScpFile {
         }
     }
 
-    public static void putFile(String localFile, String remoteTargetDirectory) {
+    public void putFile(String localFilePath, String remoteFilePath) {
         try {
             connection.connect();
-            boolean isAuthed = isAuthedWithPassword(USER, PASSWORD);
+            boolean isAuthed = isAuthencatedWithPassword(USERNAME, PASSWORD);
             if (isAuthed) {
                 SCPClient scpClient = connection.createSCPClient();
-                scpClient.put(localFile, remoteTargetDirectory);
+                scpClient.put(localFilePath, remoteFilePath);
             } else {
                 System.out.println("认证失败!");
             }
