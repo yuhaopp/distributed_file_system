@@ -1,6 +1,6 @@
 package com.nami.dfs.Controller;
 
-import com.nami.dfs.Service.FileChannelService;
+import com.nami.dfs.Service.DistributedFileTransferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -8,14 +8,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("file")
-public class FileTransferController {
+public class DistributedFileTransferController {
 
     @Autowired
-    private FileChannelService fcs;
+    private DistributedFileTransferService dfts;
 
-    @RequestMapping(method = RequestMethod.GET)
-    public String GetFile(String fileName) {
-        fcs.getFile(fileName);
+    @RequestMapping(method = RequestMethod.PUT)
+    public String Upload(String fileName) {
+        dfts.uploadFile(fileName);
         return "success";
     }
 }
