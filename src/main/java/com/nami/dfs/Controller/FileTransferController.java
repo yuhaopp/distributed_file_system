@@ -11,13 +11,12 @@ public class FileTransferController {
     String ip = "192.168.17.129";
     String remoteFilePath = "/home/user/";
     String downloadFilePath = "C:\\Users\\yuhao\\Desktop\\";
-    String fileName = "test.txt";
 
     FileChannelService fcs = new FileChannelService(ip);
 
     @RequestMapping(method = RequestMethod.GET)
-    public String GetFile(String remoteFilePath, String downloadFilePath) {
-        fcs.getFile(remoteFilePath, downloadFilePath);
+    public String GetFile(String fileName) {
+        fcs.getFile(remoteFilePath + fileName, downloadFilePath);
         return "success";
     }
 }
