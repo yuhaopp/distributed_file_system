@@ -1,7 +1,9 @@
 package com.nami.dfs;
 
+import com.nami.dfs.Service.FileChannelService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
 
 @ComponentScan({"com.nami.dfs.Controller", "com.nami.dfs.Service"})
