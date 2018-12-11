@@ -1,7 +1,10 @@
 package com.nami.dfs.Model;
 
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 
+@Component
 public class File {
     private String fileName;
     private double fileSize;

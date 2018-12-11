@@ -1,9 +1,14 @@
 package com.nami.dfs.Model;
 
-public class Node {
+import org.springframework.stereotype.Component;
+
+import java.io.Serializable;
+
+@Component
+public class Node implements Serializable {
     private int nodeID;
     private String nodeIP;
-    private String nodeStatus;
+    private boolean nodeStatus;
     private double nodeStorageSize;
     private double nodeUsedSize;
 
@@ -11,7 +16,7 @@ public class Node {
 
     }
 
-    public Node(int nodeID, String nodeIP, String nodeStatus, double nodeStorageSize, double nodeUsedSize) {
+    public Node(int nodeID, String nodeIP, boolean nodeStatus, double nodeStorageSize, double nodeUsedSize) {
         this.nodeID = nodeID;
         this.nodeIP = nodeIP;
         this.nodeStatus = nodeStatus;
@@ -35,11 +40,11 @@ public class Node {
         this.nodeIP = nodeIP;
     }
 
-    public String getNodeStatus() {
+    public boolean getNodeStatus() {
         return nodeStatus;
     }
 
-    public void setNodeStatus(String nodeStatus) {
+    public void setNodeStatus(boolean nodeStatus) {
         this.nodeStatus = nodeStatus;
     }
 

@@ -1,6 +1,8 @@
 package com.nami.dfs.Model;
 
+import org.springframework.stereotype.Component;
 
+@Component
 public class FileBlock {
     private String blockMD5;
     private double blockSize;

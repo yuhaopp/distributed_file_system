@@ -10,10 +10,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("file")
 public class DistributedFileTransferController {
 
-    @Autowired
     private DistributedFileTransferService dfts;
 
-    @RequestMapping(method = RequestMethod.PUT)
+    @Autowired
+    public DistributedFileTransferController(DistributedFileTransferService dfts) {
+        this.dfts = dfts;
+    }
+
+    @RequestMapping(method = RequestMethod.GET)
     public String Upload(String fileName) {
         dfts.uploadFile(fileName);
         return "success";
