@@ -1,5 +1,7 @@
 package com.nami.dfs; /**
  * Created by lu on 2017/1/8.
+ * <p>
+ * 文件处理辅助类
  */
 /**
  * 文件处理辅助类
@@ -17,13 +19,11 @@ import java.util.concurrent.TimeUnit;
 public class FileUtil {
 
 
-
     /**
      * 当前目录路径
      */
 
     public static String currentWorkDir = System.getProperty("user.dir") + "\\";
-
 
 
     /**
@@ -54,9 +54,7 @@ public class FileUtil {
         return new String(chs);
 
 
-
     }
-
 
 
     /**
@@ -78,7 +76,6 @@ public class FileUtil {
             result = f.delete();
 
 
-
         } else {
 
             result = true;
@@ -88,7 +85,6 @@ public class FileUtil {
         return result;
 
     }
-
 
 
     /***
@@ -102,9 +98,7 @@ public class FileUtil {
         File dir = new File(dirPath);
 
 
-
         ArrayList<File> files = new ArrayList<File>();
-
 
 
         if (dir.isDirectory()) {
@@ -134,7 +128,6 @@ public class FileUtil {
     }
 
 
-
     /**
      * 获取指定目录下的所有文件(不包括子文件夹)
      *
@@ -151,7 +144,6 @@ public class FileUtil {
         ArrayList<File> files = new ArrayList<File>();
 
 
-
         for (File f : fileArr) {
 
             if (f.isFile()) {
@@ -165,7 +157,6 @@ public class FileUtil {
         return files;
 
     }
-
 
 
     /**
@@ -203,11 +194,9 @@ public class FileUtil {
             }
 
 
-
         });
 
         ArrayList<File> files = new ArrayList<File>();
-
 
 
         for (File f : fileArr) {
@@ -223,7 +212,6 @@ public class FileUtil {
         return files;
 
     }
-
 
 
     /**
@@ -254,7 +242,6 @@ public class FileUtil {
         return result;
 
     }
-
 
 
     /**
@@ -291,7 +278,6 @@ public class FileUtil {
         return result;
 
     }
-
 
 
     /**
@@ -336,7 +322,6 @@ public class FileUtil {
     }
 
 
-
     /**
      * 拆分文件
      *
@@ -348,11 +333,11 @@ public class FileUtil {
      * @throws IOException
      */
 
-    public List<String> splitBySize(String fileName, int byteSize,String savePath)
+    public ArrayList<String> splitBySize(String fileName, int byteSize, String savePath)
 
             throws IOException {
 
-        List<String> parts = new ArrayList<String>();
+        ArrayList<String> parts = new ArrayList<String>();
 
         File file = new File(fileName);
 
@@ -367,7 +352,6 @@ public class FileUtil {
                 new ArrayBlockingQueue<Runnable>(count * 2));
 
 
-
         for (int i = 0; i < count; i++) {
 
             String partFileName = file.getName() + "."
@@ -376,7 +360,7 @@ public class FileUtil {
 
             threadPool.execute(new SplitRunnable(byteSize, i * byteSize,
 
-                    partFileName, file,savePath));
+                    partFileName, file, savePath));
 
             parts.add(partFileName);
 
@@ -384,9 +368,7 @@ public class FileUtil {
         threadPool.shutdownNow();
 
         return parts;
-
     }
-
 
 
     /**
@@ -414,7 +396,6 @@ public class FileUtil {
         Collections.sort(partFiles, new FileComparator());
 
 
-
         RandomAccessFile randomAccessFile = new RandomAccessFile(mergeFileName,
 
                 "rw");
@@ -426,13 +407,11 @@ public class FileUtil {
         randomAccessFile.close();
 
 
-
         ThreadPoolExecutor threadPool = new ThreadPoolExecutor(
 
                 partFiles.size(), partFiles.size() * 3, 1, TimeUnit.SECONDS,
 
                 new ArrayBlockingQueue<Runnable>(partFiles.size() * 2));
-
 
 
         for (int i = 0; i < partFiles.size(); i++) {
@@ -446,9 +425,7 @@ public class FileUtil {
         threadPool.shutdownNow();
 
 
-
     }
-
 
 
     /**
@@ -467,7 +444,6 @@ public class FileUtil {
         }
 
     }
-
 
 
     /**
@@ -490,10 +466,9 @@ public class FileUtil {
         String savePath;
 
 
-
         public SplitRunnable(int byteSize, int startPos, String partFileName,
 
-                             File originFile,String savePath) {
+                             File originFile, String savePath) {
 
             this.startPos = startPos;
 
@@ -506,7 +481,6 @@ public class FileUtil {
             this.savePath = savePath;
 
         }
-
 
 
         public void run() {
@@ -525,7 +499,7 @@ public class FileUtil {
 
                 int s = rFile.read(b);
 
-                os = new FileOutputStream(savePath+partFileName);
+                os = new FileOutputStream(savePath + partFileName);
 
                 os.write(b, 0, s);
 
@@ -544,7 +518,6 @@ public class FileUtil {
     }
 
 
-
     /**
      * 合并处理Runnable
      *
@@ -561,7 +534,6 @@ public class FileUtil {
         File partFile;
 
 
-
         public MergeRunnable(long startPos, String mergeFileName, File partFile) {
 
             this.startPos = startPos;
@@ -571,7 +543,6 @@ public class FileUtil {
             this.partFile = partFile;
 
         }
-
 
 
         public void run() {
@@ -605,7 +576,6 @@ public class FileUtil {
         }
 
     }
-
 
 
 }

@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import java.io.Serializable;
 
 @Component
-public class Node implements Serializable {
+public class Node implements Serializable, Comparable<Node> {
     private int nodeID;
     private String nodeIP;
     private boolean nodeStatus;
@@ -62,5 +62,10 @@ public class Node implements Serializable {
 
     public void setNodeUsedSize(double nodeUsedSize) {
         this.nodeUsedSize = nodeUsedSize;
+    }
+
+    @Override
+    public int compareTo(Node o) {
+        return (Double.compare(this.nodeUsedSize, o.nodeUsedSize));
     }
 }

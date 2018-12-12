@@ -5,14 +5,11 @@ import ch.ethz.ssh2.Session;
 import ch.ethz.ssh2.StreamGobbler;
 import org.junit.Test;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 
 import static org.junit.Assert.*;
 
-public class DistributedFileTransferServiceTest {
+public class DistributedFileStructureTransferServiceTest {
 
     @Test
     public void turnOffRemoteNode() {
@@ -39,6 +36,19 @@ public class DistributedFileTransferServiceTest {
             sess.close();
             System.out.println("执行成功");
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testCreatePath() {
+        try {
+            String filePath = "src/files/file1.docx";
+            File fp = new File(filePath);
+            if (!fp.exists()) {
+                fp.mkdir();
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

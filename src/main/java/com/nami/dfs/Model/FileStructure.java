@@ -5,16 +5,16 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 
 @Component
-public class File {
+public class FileStructure {
     private String fileName;
     private double fileSize;
-    private String fileStatus;
+    private boolean fileStatus;
     private ArrayList<FileBlock> BlockList;
 
-    public File() {
+    public FileStructure() {
     }
 
-    public File(String fileName, double fileSize, String fileStatus, ArrayList<FileBlock> blockList) {
+    public FileStructure(String fileName, double fileSize, boolean fileStatus, ArrayList<FileBlock> blockList) {
         this.fileName = fileName;
         this.fileSize = fileSize;
         this.fileStatus = fileStatus;
@@ -37,11 +37,11 @@ public class File {
         this.fileSize = fileSize;
     }
 
-    public String getFileStatus() {
+    public boolean isFileStatus() {
         return fileStatus;
     }
 
-    public void setFileStatus(String fileStatus) {
+    public void setFileStatus(boolean fileStatus) {
         this.fileStatus = fileStatus;
     }
 

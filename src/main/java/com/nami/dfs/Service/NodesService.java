@@ -10,11 +10,10 @@ import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
 
 @Service
 public class NodesService {
-    ForceStopNodes forceStopNodes = new ForceStopNodes();
-
     @Value("#{'${nodes.ips}'.split(',')}")
     private ArrayList<String> ipList;
 
@@ -30,9 +29,11 @@ public class NodesService {
     @Value("${nodes.port}")
     private int port;
 
-    @Value("${nodes.force_stop_nodes_file}")
+    @Value("${nodes.forceStopNodesFile}")
     private String forceStopNodesFile;
 
+    @Value("${nodes.rootPath}")
+    private String path;
 
     public ArrayList<Node> getNodesStatus() throws IOException {
         ArrayList<Node> nodeList = new ArrayList<>();
@@ -57,24 +58,25 @@ public class NodesService {
 
     public ArrayList<String> getForceStopNodes() {
         ForceStopNodes forceStopNodes = new ForceStopNodes();
-        forceStopNodes = (ForceStopNodes) deserial(forceStopNodesFile, forceStopNodes);
+        forceStopNodes = (ForceStopNodes) SerialService.deserial(path + forceStopNodesFile, forceStopNodes);
         return forceStopNodes.getNodeList();
     }
 
     public ForceStopNodes addForceStopNodes(String ip) {
-        File file = new File(forceStopNodesFile);
+        File file = new File(path + forceStopNodesFile);
+
         ForceStopNodes forceStopNodes = new ForceStopNodes();
         ArrayList<String> nodeList = new ArrayList<>();
         if (!file.exists()) {
             nodeList.add(ip);
             forceStopNodes.setNodeList(nodeList);
-            serial(forceStopNodes, forceStopNodesFile);
+            SerialService.serial(forceStopNodes, path + forceStopNodesFile);
         } else {
-            forceStopNodes = (ForceStopNodes) deserial(forceStopNodesFile, forceStopNodes);
+            forceStopNodes = (ForceStopNodes) SerialService.deserial(path + forceStopNodesFile, forceStopNodes);
             nodeList = forceStopNodes.getNodeList();
             nodeList.add(ip);
             forceStopNodes.setNodeList(nodeList);
-            serial(forceStopNodes, forceStopNodesFile);
+            SerialService.serial(forceStopNodes, path + forceStopNodesFile);
         }
         return forceStopNodes;
     }
@@ -82,11 +84,11 @@ public class NodesService {
     public ForceStopNodes deleteForceNodes(String ip) {
         ForceStopNodes forceStopNodes = new ForceStopNodes();
         ArrayList<String> nodeList = new ArrayList<>();
-        forceStopNodes = (ForceStopNodes) deserial(forceStopNodesFile, forceStopNodes);
+        forceStopNodes = (ForceStopNodes) SerialService.deserial(path + forceStopNodesFile, forceStopNodes);
         nodeList = forceStopNodes.getNodeList();
         nodeList.remove(ip);
         forceStopNodes.setNodeList(nodeList);
-        serial(forceStopNodes, forceStopNodesFile);
+        SerialService.serial(forceStopNodes, path + forceStopNodesFile);
         return forceStopNodes;
     }
 
@@ -128,25 +130,10 @@ public class NodesService {
         return false;
     }
 
-    public static void serial(Serializable s, String serialFileName) {
-        try {
-            FileOutputStream fs = new FileOutputStream(serialFileName);
-            ObjectOutputStream os = new ObjectOutputStream(fs);
-            os.writeObject(s);
-            os.flush();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
 
-    public Object deserial(String serialFileName, Object o) {
-        try {
-            FileInputStream fs = new FileInputStream(serialFileName);
-            ObjectInputStream ois = new ObjectInputStream(fs);
-            return (Object) ois.readObject();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return null;
+    public ArrayList<Node> sortNodesByStorage() throws IOException {
+        ArrayList<Node> nodes = getNodesStatus();
+        Collections.sort(nodes);
+        return nodes;
     }
 }

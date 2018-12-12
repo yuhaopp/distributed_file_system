@@ -4,6 +4,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class FileBlock {
+
+    private String blockName;
     private String blockMD5;
     private double blockSize;
     private Node belongedNode;
@@ -11,7 +13,8 @@ public class FileBlock {
     public FileBlock() {
     }
 
-    public FileBlock(String blockMD5, double blockSize, Node belongedNode) {
+    public FileBlock(String blockName, String blockMD5, double blockSize, Node belongedNode) {
+        this.blockName = blockName;
         this.blockMD5 = blockMD5;
         this.blockSize = blockSize;
         this.belongedNode = belongedNode;
@@ -39,5 +42,13 @@ public class FileBlock {
 
     public void setBelongedNode(Node belongedNode) {
         this.belongedNode = belongedNode;
+    }
+
+    public String getBlockName() {
+        return blockName;
+    }
+
+    public void setBlockName(String blockName) {
+        this.blockName = blockName;
     }
 }
