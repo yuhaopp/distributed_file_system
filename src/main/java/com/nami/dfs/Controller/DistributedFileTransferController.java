@@ -43,7 +43,7 @@ public class DistributedFileTransferController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public boolean downloadFile(String fileName, HttpServletResponse response) throws IOException {
+    public void downloadFile(String fileName, HttpServletResponse response) throws IOException {
         dfts.downloadFile(fileName);
 
         File file = new File(path+fileName);
@@ -72,7 +72,6 @@ public class DistributedFileTransferController {
             }
         }
         System.out.println("success");
-        return false;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "detail")
