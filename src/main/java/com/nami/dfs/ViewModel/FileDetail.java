@@ -1,25 +1,24 @@
-package com.nami.dfs.Model;
+package com.nami.dfs.ViewModel;
 
 import org.springframework.stereotype.Component;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 @Component
-public class FileStructure implements Serializable {
+public class FileDetail {
     private String fileName;
     private double fileSize;
     private boolean fileStatus;
-    private ArrayList<FileBlock> BlockList;
+    private ArrayList<FileBlockWithNodeInformation> FileBlockWithNodeInformation;
 
-    public FileStructure() {
-    }
-
-    public FileStructure(String fileName, double fileSize, boolean fileStatus, ArrayList<FileBlock> blockList) {
+    public FileDetail(String fileName, double fileSize, boolean fileStatus, ArrayList<FileBlockWithNodeInformation> fileBlockWithNodeInformation) {
         this.fileName = fileName;
         this.fileSize = fileSize;
         this.fileStatus = fileStatus;
-        BlockList = blockList;
+        FileBlockWithNodeInformation = fileBlockWithNodeInformation;
+    }
+
+    public FileDetail() {
     }
 
     public String getFileName() {
@@ -46,11 +45,11 @@ public class FileStructure implements Serializable {
         this.fileStatus = fileStatus;
     }
 
-    public ArrayList<FileBlock> getBlockList() {
-        return BlockList;
+    public ArrayList<FileBlockWithNodeInformation> getFileBlockWithNodeInformation() {
+        return FileBlockWithNodeInformation;
     }
 
-    public void setBlockList(ArrayList<FileBlock> blockList) {
-        BlockList = blockList;
+    public void setFileBlockWithNodeInformation(ArrayList<FileBlockWithNodeInformation> fileBlockWithNodeInformation) {
+        FileBlockWithNodeInformation = fileBlockWithNodeInformation;
     }
 }

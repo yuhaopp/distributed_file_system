@@ -4,7 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
-@ComponentScan({"com.nami.dfs.Controller", "com.nami.dfs.Service", "com.nami.dfs.Model"})
+@ComponentScan({"com.nami.dfs.Controller", "com.nami.dfs.Service", "com.nami.dfs.Model","com.nami.dfs.ViewModel","com.nami.dfs.Config"})
 @SpringBootApplication
 public class DfsApplication {
     public static void main(String[] args) {

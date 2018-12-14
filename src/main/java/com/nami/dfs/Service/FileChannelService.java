@@ -2,6 +2,7 @@ package com.nami.dfs.Service;
 
 import ch.ethz.ssh2.Connection;
 import ch.ethz.ssh2.SCPClient;
+import ch.ethz.ssh2.SFTPv3Client;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -63,6 +64,24 @@ public class FileChannelService {
             if (isAuthed) {
                 SCPClient scpClient = connection.createSCPClient();
                 scpClient.put(localFilePath, remoteFilePath);
+            } else {
+                System.out.println("认证失败!");
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            connection.close();
+        }
+    }
+
+    public void deleteFile(String fileName, String ip) throws IOException {
+        try {
+            connection = new Connection(ip, PORT);
+            connection.connect();
+            boolean isAuthed = isAuthencatedWithPassword(USERNAME, PASSWORD);
+            if (isAuthed) {
+                SFTPv3Client sftpClient = new SFTPv3Client(connection);
+                sftpClient.rm(remoteFilePath + "/" + fileName);
             } else {
                 System.out.println("认证失败!");
             }

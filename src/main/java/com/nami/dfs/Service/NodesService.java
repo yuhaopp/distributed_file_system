@@ -58,7 +58,11 @@ public class NodesService {
 
     public ArrayList<String> getForceStopNodes() {
         ForceStopNodes forceStopNodes = new ForceStopNodes();
-        forceStopNodes = (ForceStopNodes) SerialService.deserial(path + forceStopNodesFile, forceStopNodes);
+        File file = new File(path + forceStopNodesFile);
+        if (file.exists()) {
+            forceStopNodes = (ForceStopNodes) SerialService.deserial(path + forceStopNodesFile, forceStopNodes);
+            return forceStopNodes.getNodeList();
+        }
         return forceStopNodes.getNodeList();
     }
 
@@ -134,6 +138,21 @@ public class NodesService {
     public ArrayList<Node> sortNodesByStorage() throws IOException {
         ArrayList<Node> nodes = getNodesStatus();
         Collections.sort(nodes);
+        for (Node node : nodes) {
+            if (!node.getNodeStatus()) {
+                nodes.remove(node);
+            }
+        }
         return nodes;
+    }
+
+    public Node getNodeByIp(String ip) throws IOException {
+        ArrayList<Node> nodes = getNodesStatus();
+        for (Node node : nodes) {
+            if (node.getNodeIP().equals(ip)) {
+                return node;
+            }
+        }
+        return null;
     }
 }
