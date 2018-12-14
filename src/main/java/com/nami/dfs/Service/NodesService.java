@@ -100,7 +100,7 @@ public class NodesService {
         try {
             Connection conn = new Connection(ip);
             conn.connect();
-            boolean isAuthenticated = conn.authenticateWithPassword("user", "123456");
+            boolean isAuthenticated = conn.authenticateWithPassword(username,password);
             if (isAuthenticated == false) {
                 return 0;
             }

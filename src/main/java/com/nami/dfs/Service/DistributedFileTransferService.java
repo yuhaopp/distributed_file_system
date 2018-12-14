@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 
@@ -70,14 +67,14 @@ public class DistributedFileTransferService {
 
             ArrayList<String> partName = fileUtil.splitBySize(path + fileName, blockSize * 1024, filePath);
             for (String aPartName : partName) {
-                this.uploadFileToRemoteNodes(fileName, aPartName,fileBlockArrayList);
+                this.uploadFileToRemoteNodes(fileName, aPartName, fileBlockArrayList);
             }
 
             File file = new File(path + fileName);
             FileStructure fileStructure = new FileStructure();
             fileStructure.setFileName(fileName);
             fileStructure.setFileStatus(true);
-            fileStructure.setFileSize(file.length() / 1024);
+            fileStructure.setFileSize(Math.ceil((double) file.length() / (double) 1024));
             fileStructure.setBlockList(fileBlockArrayList);
             fileListService.addFile(fileStructure);
         } catch (Exception e) {
@@ -109,7 +106,7 @@ public class DistributedFileTransferService {
         }
     }
 
-    private void uploadFileToRemoteNodes(String fileName, String partName,ArrayList<FileBlock> fileBlockArrayList) throws IOException {
+    private void uploadFileToRemoteNodes(String fileName, String partName, ArrayList<FileBlock> fileBlockArrayList) throws IOException {
         ArrayList<Node> nodes = nodesService.sortNodesByStorage();
         String partFilePath = path + fileName.replace(".", "_") + "/" + partName;
         ArrayList<String> belongedNodes = new ArrayList<>();
@@ -125,7 +122,7 @@ public class DistributedFileTransferService {
         fileBlock.setBlockName(partName);
         fileBlock.setBelongedNodes(belongedNodes);
         fileBlock.setBlockMD5(MD5Service.getMd5ByFile(file));
-        fileBlock.setBlockSize(file.length() / 1024);
+        fileBlock.setBlockSize(Math.ceil((double) file.length() / (double) 1024));
         fileBlockArrayList.add(fileBlock);
     }
 
@@ -135,5 +132,25 @@ public class DistributedFileTransferService {
         String dirPath = path + fileName.replace(".", "_");
         fileUtil.mergePartFiles(dirPath, ".part", blockSize * 1024,
                 dirPath + "/" + fileName);
+    }
+
+    public String getFileContent(String fileName) throws IOException {
+        StringBuffer content = new StringBuffer();
+        readToBuffer(content, path + fileName);
+        return content.toString();
+    }
+
+    public static void readToBuffer(StringBuffer buffer, String filePath) throws IOException {
+        InputStream is = new FileInputStream(filePath);
+        String line;
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        line = reader.readLine();
+        while (line != null) {
+            buffer.append(line);
+            buffer.append("\n");
+            line = reader.readLine();
+        }
+        reader.close();
+        is.close();
     }
 }

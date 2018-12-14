@@ -46,7 +46,7 @@ public class DistributedFileTransferController {
     public void downloadFile(String fileName, HttpServletResponse response) throws IOException {
         dfts.downloadFile(fileName);
 
-        File file = new File(path+fileName);
+        File file = new File(path + fileName);
         response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
         byte[] buff = new byte[1024];
         BufferedInputStream bis = null;
@@ -72,6 +72,11 @@ public class DistributedFileTransferController {
             }
         }
         System.out.println("success");
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "content")
+    public String getFileContent(String fileName) throws IOException {
+        return dfts.getFileContent(fileName);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "detail")
